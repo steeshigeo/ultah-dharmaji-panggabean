@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBD Muhamad Stevanus Dharmaji Hutagalung Panggabean!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & Press Start 2P untuk gaya playful pixel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+        .neon-text-cyan {
+            text-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 40px #0891b2;
+        }
+        .neon-text-pink {
+            text-shadow: 0 0 10px #ec4899, 0 0 20px #ec4899, 0 0 40px #be185d;
+        }
+        /* Style card flip animation */
+        .perspective {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a855f7;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen pb-16 flex flex-col items-center justify-start select-none">
+
+    <!-- Canvas Confetti Overlay -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- Floating Audio Control Top Right -->
+    <div class="fixed top-4 right-4 z-40 flex items-center gap-2 bg-slate-900/80 backdrop-blur-md p-2 px-3 rounded-full border border-purple-500/40 shadow-lg shadow-purple-500/20">
+        <button id="music-toggle-btn" onclick="togglePartyMusic()" class="flex items-center gap-2 text-xs md:text-sm font-semibold text-purple-300 hover:text-purple-100 transition">
+            <span id="music-icon" class="text-base">🎵</span>
+            <span id="music-text">Play Party 8-Bit</span>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-4xl px-4 pt-8 flex flex-col items-center gap-8 relative z-10">
+
+        <!-- HEADER SECTION -->
+        <header class="text-center w-full mt-4 space-y-4">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-purple-900/60 border border-purple-400/30 text-purple-300 text-xs md:text-sm font-mono tracking-wider animate-pulse">
+                ⚠️ SPESIES RARE ULANG TAHUN DETECTED ⚠️
+            </div>
+            
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight px-2">
+                <span class="block text-slate-300 text-base sm:text-xl font-normal mb-1">HAPPY BIRTHDAY UNTUK MANUSIA BERNAMA:</span>
+                <span class="bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent animate-gradient drop-shadow-md break-words">
+                    MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN
+                </span>
+            </h1>
+            
+            <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto italic">
+                "Pria pemilik nama terpanjang di KTP yang kalau ikut ujian CPNS bulatan namanya tembus ke lembar sebelah."
+            </p>
+        </header>
+
+        <!-- PRANK SECTION: RUNAWAY GIFT BUTTON -->
+        <section class="w-full bg-slate-900/80 border border-yellow-500/30 rounded-3xl p-6 md:p-8 text-center relative overflow-hidden shadow-2xl backdrop-blur-md">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl"></div>
+            
+            <span class="text-xs font-bold uppercase tracking-widest text-yellow-400 bg-yellow-950/80 border border-yellow-500/40 px-3 py-1 rounded-full">
+                🎁 HADIAH SPESIAL DARI KAWAN-KAWAN
+            </span>
+            
+            <h2 class="text-xl sm:text-2xl font-bold mt-4 text-white">
+                Klaim Hadiah Ulang Tahun Mewah Anda!
+            </h2>
+            <p class="text-slate-300 text-xs sm:text-sm mt-1 mb-6">
+                Silahkan pilih salah satu: iPhone 16 Pro Max 1TB / Pajero Sport / Voucher Makan Gratis 1 Tahun!
+            </p>
+
+            <div id="button-boundary" class="relative w-full h-36 border border-dashed border-slate-700 rounded-2xl flex items-center justify-center overflow-hidden bg-slate-950/50">
+                <button id="dodge-btn" 
+                        onmouseover="dodgeButton()" 
+                        onclick="dodgeButton(); playFailSound();"
+                        ontouchstart="dodgeButton(); playFailSound();"
+                        class="absolute transition-all duration-150 ease-out bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-slate-950 font-black px-6 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 text-sm sm:text-base whitespace-nowrap cursor-pointer hover:scale-105 active:scale-95">
+                    🎁 KLAIM HADIAH SEKARANG!
+                </button>
+                <div id="dodge-taunt" class="text-xs text-slate-500 italic select-none">
+                    (Coba klik tombolnya kalau hoki 😎)
+                </div>
+            </div>
+            <p id="dodge-counter" class="text-xs text-slate-400 mt-2">Jumlah percobaan gagal: <span class="text-yellow-400 font-bold" id="fail-count">0</span>x</p>
+        </section>
+
+        <!-- MINI GAME / CAPTCHA PRANK SECTION -->
+        <section class="w-full bg-slate-900/80 border border-purple-500/30 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <h2 class="text-lg sm:text-xl font-bold text-purple-300 flex items-center gap-2">
+                    <span>🧠</span> Uji Kesabaran Birthday Boy (Captcha System)
+                </h2>
+                <span class="text-xs bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-1 rounded-md font-mono">Soal 1 dari 1</span>
+            </div>
+
+            <p class="text-sm text-slate-300 mb-4">
+                Pilih gambar di bawah ini yang menunjukkan <strong class="text-cyan-400">"Spesies Paling Ganteng & Bebas Utang di Dunia"</strong> untuk melanjutkan:
+            </p>
+
+            <!-- Grid Captcha Option -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                <!-- Option 1 -->
+                <button onclick="checkCaptcha(false)" class="group relative bg-slate-800 border-2 border-slate-700 hover:border-pink-500 rounded-xl overflow-hidden p-2 transition flex flex-col items-center text-center">
+                    <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-4xl mb-2 group-hover:scale-105 transition">
+                        🗿
+                    </div>
+                    <span class="text-xs text-slate-300 font-medium">Patung Easter Island</span>
+                </button>
+
+                <!-- Option 2 -->
+                <button onclick="checkCaptcha(false)" class="group relative bg-slate-800 border-2 border-slate-700 hover:border-pink-500 rounded-xl overflow-hidden p-2 transition flex flex-col items-center text-center">
+                    <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-4xl mb-2 group-hover:scale-105 transition">
+                        🦧
+                    </div>
+                    <span class="text-xs text-slate-300 font-medium">Orangutan Santuy</span>
+                </button>
+
+                <!-- Option 3 (Correct/Prank) -->
+                <button onclick="checkCaptcha(true)" class="group relative bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 rounded-xl overflow-hidden p-2 transition flex flex-col items-center text-center col-span-2 sm:col-span-1">
+                    <div class="w-full h-28 bg-gradient-to-tr from-cyan-900 to-purple-900 rounded-lg flex flex-col items-center justify-center mb-2 group-hover:scale-105 transition relative">
+                        <span class="text-4xl">🤴</span>
+                        <span class="text-[10px] bg-cyan-500 text-slate-950 font-bold px-2 py-0.5 rounded-full absolute bottom-1">DHARMAJI</span>
+                    </div>
+                    <span class="text-xs text-cyan-300 font-bold">Muhamad Stevanus Dharmaji</span>
+                </button>
+            </div>
+
+            <!-- Result Box -->
+            <div id="captcha-result" class="hidden p-4 rounded-xl bg-slate-950 border text-center text-sm"></div>
+        </section>
+
+        <!-- SURAT CINTA & DOA KOCAK (CARD FLIP SECTION) -->
+        <section class="w-full">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-white">💌 Surat Cinta & Web Of Secrets</h2>
+                <p class="text-slate-400 text-xs sm:text-sm">Klik kartu di bawah ini untuk melihat ucapan jujur dari kami!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <div class="perspective h-64 w-full cursor-pointer" onclick="flipCard(this)">
+                    <div class="card-inner relative w-full h-full transform-style-3d rounded-2xl shadow-xl">
+                        <!-- Front -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-slate-900 border border-purple-500/40 rounded-2xl p-6 flex flex-col items-center justify-center text-center backface-hidden">
+                            <span class="text-4xl mb-2">📜</span>
+                            <h3 class="text-lg font-bold text-purple-300">Doa Khusus Tahun Ini</h3>
+                            <p class="text-xs text-slate-400 mt-2">[ Klik untuk membuka isi doa ]</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 bg-slate-900 border-2 border-purple-400 rounded-2xl p-6 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 overflow-y-auto">
+                            <h4 class="text-sm font-bold text-cyan-400 mb-2">Aamiin-kan Bro! 🙏</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Semoga tambah ganteng, rejeki ngalir deras kayak air keran yang lupa dimatiin, makin penyabar menghadapi keusilan teman-teman, dan semoga nama panjangmu cukup ditulis di formulir mana pun!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="perspective h-64 w-full cursor-pointer" onclick="flipCard(this)">
+                    <div class="card-inner relative w-full h-full transform-style-3d rounded-2xl shadow-xl">
+                        <!-- Front -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-pink-900 to-slate-900 border border-pink-500/40 rounded-2xl p-6 flex flex-col items-center justify-center text-center backface-hidden">
+                            <span class="text-4xl mb-2">💸</span>
+                            <h3 class="text-lg font-bold text-pink-300">Pengingat Penting</h3>
+                            <p class="text-xs text-slate-400 mt-2">[ Klik untuk buka pesan ]</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 bg-slate-900 border-2 border-pink-400 rounded-2xl p-6 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 overflow-y-auto">
+                            <h4 class="text-sm font-bold text-yellow-400 mb-2">Hukum Alam Ulang Tahun 🍕</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Bertambah umur = Bertambah dewasa. Tapi yang paling penting: <strong>JANGAN LUPA TRAKTIRAN MIE AYAM / KOPI / BOBA-NYA BOS!</strong> Kami menagih janji makan-makanmu!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GENERATOR PREDIKSI MASA DEPAN DHARMAJI -->
+        <section class="w-full bg-gradient-to-r from-purple-950/60 to-pink-950/60 border border-pink-500/30 rounded-3xl p-6 md:p-8 text-center shadow-2xl backdrop-blur-md">
+            <span class="text-3xl">🔮</span>
+            <h2 class="text-xl font-bold text-pink-300 mt-2">Mesin Ramalan Masa Depan Dharmaji</h2>
+            <p class="text-xs text-slate-300 mt-1 mb-6">Penasaran apa yang bakal terjadi sama kamu di usia yang baru ini?</p>
+
+            <button onclick="generatePrediction()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-pink-500/20 text-sm transition transform active:scale-95 cursor-pointer">
+                🔮 Ramal Masa Depan Saya!
+            </button>
+
+            <div id="prediction-box" class="mt-6 p-4 rounded-xl bg-slate-900/90 border border-pink-500/40 text-pink-200 text-sm font-medium min-h-[60px] flex items-center justify-center">
+                Tekan tombol di atas untuk memulai ramalan gaib...
+            </div>
+        </section>
+
+        <!-- SOUNDBOARD SOUND EFFECTS SECTION -->
+        <section class="w-full bg-slate-900/80 border border-slate-800 rounded-3xl p-6 text-center">
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">🔊 Soundboard Ulang Tahun Kocak</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="playHonkSound()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs border border-slate-700 flex items-center gap-2">
+                    🎺 Terompet Pesta
+                </button>
+                <button onclick="playDonkeySound()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs border border-slate-700 flex items-center gap-2">
+                    🐴 Suara Keledai
+                </button>
+                <button onclick="playApplauseSound()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs border border-slate-700 flex items-center gap-2">
+                    👏 Tepuk Tangan Riuh
+                </button>
+                <button onclick="triggerConfettiBurst(); playPartyNoise();" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold border border-purple-400 flex items-center gap-2">
+                    🎉 LEDAKKAN KONFETI!
+                </button>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-xs text-slate-500 pt-6 pb-4">
+            <p>Dibuat khusus dengan kadar kejailan 100% untuk <strong>Muhamad Stevanus Dharmaji Hutagalung Panggabean</strong>.</p>
+            <p class="mt-1">© 2026 Sahabat-Sahabat Penagih Traktiran. All rights reserved.</p>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT CODE -->
+    <script>
+        // ==========================================
+        // 1. WEB AUDIO API SYNTHESIZER (NO EXTERNAL AUDIO FILES)
+        // ==========================================
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let musicInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Sound Effect: Runaway Dodge / Whistle
+        function playDodgeSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
+
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+        }
+
+        // Sound Effect: Fail / Wrong Answer
+        function playFailSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(110, audioCtx.currentTime + 0.15);
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        // Sound Effect: Success
+        function playSuccessSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C
+            notes.forEach((freq, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.08));
+
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime + (idx * 0.08));
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (idx * 0.08) + 0.2);
+
+                osc.start(audioCtx.currentTime + (idx * 0.08));
+                osc.stop(audioCtx.currentTime + (idx * 0.08) + 0.2);
+            });
+        }
+
+        // Sound Effect: Party Honk
+        function playHonkSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 0.2);
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // Sound Effect: Funny Donkey / Hee-Haw
+        function playDonkeySound() {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(500, audioCtx.currentTime + 0.2);
+            osc.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 0.4);
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        }
+
+        // Sound Effect: Applause simulation
+        function playApplauseSound() {
+            initAudio();
+            if (!audioCtx) return;
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(200 + Math.random() * 800, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                }, i * 35);
+            }
+        }
+
+        function playPartyNoise() {
+            playHonkSound();
+            setTimeout(playSuccessSound, 150);
+        }
+
+        // 8-Bit Happy Birthday Melody
+        const bdayMelody = [
+            { note: 264, duration: 0.25 }, { note: 264, duration: 0.25 },
+            { note: 297, duration: 0.5 },  { note: 264, duration: 0.5 },
+            { note: 352, duration: 0.5 },  { note: 330, duration: 1.0 },
+            
+            { note: 264, duration: 0.25 }, { note: 264, duration: 0.25 },
+            { note: 297, duration: 0.5 },  { note: 264, duration: 0.5 },
+            { note: 396, duration: 0.5 },  { note: 352, duration: 1.0 },
+
+            { note: 264, duration: 0.25 }, { note: 264, duration: 0.25 },
+            { note: 528, duration: 0.5 },  { note: 440, duration: 0.5 },
+            { note: 352, duration: 0.5 },  { note: 330, duration: 0.5 },
+            { note: 297, duration: 0.5 }
+        ];
+
+        let noteIndex = 0;
+
+        function play8BitNote() {
+            if (!isMusicPlaying) return;
+            initAudio();
+            
+            const current = bdayMelody[noteIndex];
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'square'; // 8-bit sound
+            osc.frequency.setValueAtTime(current.note, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + current.duration - 0.05);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + current.duration);
+
+            noteIndex = (noteIndex + 1) % bdayMelody.length;
+            musicInterval = setTimeout(play8BitNote, current.duration * 1000);
+        }
+
+        function togglePartyMusic() {
+            initAudio();
+            isMusicPlaying = !isMusicPlaying;
+            const btnText = document.getElementById('music-text');
+            const btnIcon = document.getElementById('music-icon');
+
+            if (isMusicPlaying) {
+                btnText.innerText = "Stop Music";
+                btnIcon.innerText = "🔊";
+                noteIndex = 0;
+                play8BitNote();
+            } else {
+                btnText.innerText = "Play Party 8-Bit";
+                btnIcon.innerText = "🎵";
+                clearTimeout(musicInterval);
+            }
+        }
+
+
+        // ==========================================
+        // 2. RUNAWAY / DODGE BUTTON LOGIC
+        // ==========================================
+        let failCount = 0;
+        const taunts = [
+            "Wkwkwk meleset bro! 😜",
+            "Kurang cepat tangannya! ⚡",
+            "Dharmaji gabakal dapet iPhone 16! 📱",
+            "Yakin mau nyoba lagi? 😂",
+            "Tombolnya takut sama ketampananmu! 😎",
+            "Hampir... tapi boong! 🤪"
+        ];
+
+        function dodgeButton() {
+            const btn = document.getElementById('dodge-btn');
+            const container = document.getElementById('button-boundary');
+            const tauntText = document.getElementById('dodge-taunt');
+            const failCounter = document.getElementById('fail-count');
+
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+
+            // Calculate max positions inside container
+            const maxX = containerRect.width - btnRect.width - 20;
+            const maxY = containerRect.height - btnRect.height - 20;
+
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            btn.style.left = `${randomX}px`;
+            btn.style.top = `${randomY}px`;
+
+            failCount++;
+            failCounter.innerText = failCount;
+
+            // Random Taunt
+            const randomTaunt = taunts[Math.floor(Math.random() * taunts.length)];
+            tauntText.innerText = randomTaunt;
+
+            playDodgeSound();
+        }
+
+
+        // ==========================================
+        // 3. CAPTCHA PRANK LOGIC
+        // ==========================================
+        function checkCaptcha(isCorrect) {
+            const resultBox = document.getElementById('captcha-result');
+            resultBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSuccessSound();
+                triggerConfettiBurst();
+                resultBox.className = "p-4 rounded-xl bg-cyan-950/80 border border-cyan-400 text-center text-sm text-cyan-200 animate-bounce";
+                resultBox.innerHTML = `
+                    🎉 <strong>BENAR 100%!</strong> <br> 
+                    Validasi Sistem: Muhamad Stevanus Dharmaji Hutagalung Panggabean terbukti secara sah & meyakinkan sebagai orang paling ganteng dan wajib merayakan ultah hari ini!
+                `;
+            } else {
+                playFailSound();
+                resultBox.className = "p-4 rounded-xl bg-red-950/80 border border-red-500 text-center text-sm text-red-200";
+                resultBox.innerHTML = `
+                    ❌ <strong>SALAH BESAR!</strong> <br>
+                    Masa pilihanmu kalah ganteng sama Dharmaji? Coba pilih foto Dharmaji yang paling bersinar!
+                `;
+            }
+        }
+
+
+        // ==========================================
+        // 4. CARD FLIP LOGIC
+        // ==========================================
+        function flipCard(cardWrapper) {
+            const inner = cardWrapper.querySelector('.card-inner');
+            inner.classList.toggle('rotate-y-180');
+            playSuccessSound();
+        }
+
+
+        // ==========================================
+        // 5. PREDICTION GENERATOR
+        // ==========================================
+        const predictions = [
+            "🔮 Tahun ini Dharmaji bakal ketiban rezeki nomplok sampai sanggup nraktir se-Kecamatan!",
+            "🔮 Di usia baru ini, Dharmaji bakal makin mahir menghindari tagihan kas & makin pro main game!",
+            "🔮 Ramalan mengatakan: Kamu bakal dapat jodoh yang kagum sama panjangnya nama lengkapmu!",
+            "🔮 Prediksi 2026: Semua dompetmu akan tebal, tapi bukan karena uang... melainkan nota belanjaan!",
+            "🔮 Bintangmu bilang: Tahun ini kamu akan makin bersinar, sampai-sampai lampu jalanan minder!",
+            "🔮 Ramalan Ilmiah: Kadar kegantengan Dharmaji akan meningkat 300% setelah traktir teman-temannya!"
+        ];
+
+        function generatePrediction() {
+            playSuccessSound();
+            const box = document.getElementById('prediction-box');
+            const randomIndex = Math.floor(Math.random() * predictions.length);
+            
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.innerHTML = predictions[randomIndex];
+                box.style.opacity = 1;
+            }, 150);
+            triggerConfettiBurst();
+        }
+
+
+        // ==========================================
+        // 6. CANVAS CONFETTI ANIMATION SYSTEM
+        // ==========================================
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 4;
+                this.speedX = Math.random() * 4 - 2;
+                this.speedY = Math.random() * 3 + 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+
+                if (this.y > canvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        // Initialize particles
+        function initConfetti() {
+            particles = [];
+            for (let i = 0; i < 70; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function triggerConfettiBurst() {
+            for (let i = 0; i < 40; i++) {
+                const p = new Particle(canvas.width / 2, canvas.height / 2);
+                p.speedX = (Math.random() - 0.5) * 12;
+                p.speedY = (Math.random() - 0.5) * 12;
+                particles.push(p);
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+
+        // Start Confetti on Page Load
+        window.onload = function() {
+            initConfetti();
+            animateConfetti();
+        };
+
+    </script>
+</body>
+</html>
