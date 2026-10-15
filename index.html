@@ -3,112 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SURPRISE DARI KAWAN-KAWAN! HBD DHARMAJI!</title>
+  <title>SANGAT RAHASIA: Kejutan Dharmaji</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Canvas Confetti CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- FontAwesome CDN -->
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-      min-height: 100vh;
-      color: #f8fafc;
+      user-select: none;
+      -webkit-user-select: none;
       overflow-x: hidden;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+      color: #f8fafc;
+      min-height: 100vh;
     }
-
     .font-fun {
-      font-family: 'Fredoka One', cursive;
+      font-family: 'Fredoka', cursive;
     }
 
-    /* Envelope CSS Styling */
+    /* Envelope Styling & Animation */
     .envelope-wrapper {
       perspective: 1000px;
     }
-
     .envelope {
       width: 320px;
       height: 220px;
-      background-color: #e11d48;
       position: relative;
-      border-radius: 12px;
+      background: #f43f5e;
+      border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-
-    .envelope:hover {
-      transform: translateY(-5px) scale(1.02);
+    @media (min-width: 640px) {
+      .envelope {
+        width: 420px;
+        height: 270px;
+      }
     }
-
-    .envelope .front {
+    .envelope:hover {
+      transform: scale(1.03) rotate(-1deg);
+    }
+    
+    /* Envelope Flap */
+    .envelope-flap {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 0;
       height: 0;
-      z-index: 3;
-    }
-
-    .envelope .front.flap {
       border-left: 160px solid transparent;
       border-right: 160px solid transparent;
-      border-top: 120px solid #f43f5e;
-      border-bottom: 0px solid transparent;
-      top: 0;
+      border-top: 130px solid #e11d48;
       transform-origin: top;
-      transition: transform 0.6s ease 0.2s, z-index 0.2s;
+      transition: transform 0.6s ease-in-out, z-index 0.2s;
+      z-index: 5;
     }
-
-    .envelope .front.pocket {
-      border-left: 160px solid #be123c;
-      border-right: 160px solid #be123c;
-      border-bottom: 110px solid #9f1239;
-      border-top: 110px solid transparent;
-      bottom: 0;
-      border-radius: 0 0 12px 12px;
+    @media (min-width: 640px) {
+      .envelope-flap {
+        border-left-width: 210px;
+        border-right-width: 210px;
+        border-top-width: 155px;
+      }
     }
-
-    .envelope .letter {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      width: 280px;
-      height: 180px;
-      background: #ffffff;
-      border-radius: 8px;
-      z-index: 2;
-      transition: transform 0.6s ease 0.5s;
-      box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .envelope.open .front.flap {
+    .envelope.open .envelope-flap {
       transform: rotateX(180deg);
       z-index: 1;
     }
 
+    /* Letter inside envelope */
+    .letter {
+      position: absolute;
+      bottom: 10px;
+      left: 5%;
+      width: 90%;
+      height: 85%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2;
+      transform: translateY(0);
+      color: #0f172a;
+    }
     .envelope.open .letter {
-      transform: translateY(-130px);
-      z-index: 4;
+      transform: translateY(-130px) scale(1.05);
+      z-index: 6;
     }
 
-    /* Glassmorphism card */
+    /* Envelope Pocket Front */
+    .envelope-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border-bottom: 220px solid #f43f5e;
+      border-left: 160px solid #fb7185;
+      border-right: 160px solid #fb7185;
+      border-radius: 0 0 16px 16px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    @media (min-width: 640px) {
+      .envelope-pocket {
+        border-bottom-width: 270px;
+        border-left-width: 210px;
+        border-right-width: 210px;
+      }
+    }
+
+    /* Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      z-index: 6;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .envelope.open .wax-seal {
+      opacity: 0;
+      transform: translate(-50%, -20%) scale(0.5);
+      pointer-events: none;
+    }
+
+    /* Scanner Animation */
+    .scan-line {
+      width: 100%;
+      height: 4px;
+      background: #3b82f6;
+      box-shadow: 0 0 15px #3b82f6;
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: scanAnim 2s infinite alternate ease-in-out;
+    }
+    @keyframes scanAnim {
+      0% { top: 0%; }
+      100% { top: 95%; }
+    }
+
+    /* Glassmorphism cards */
     .glass-card {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
-
+    
     .glass-card-glow {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(20px);
@@ -116,388 +167,706 @@
       box-shadow: 0 0 30px rgba(219, 39, 119, 0.2);
     }
 
-    /* Scanner effect */
-    @keyframes scan {
-      0% { top: 0%; }
-      50% { top: 100%; }
-      100% { top: 0%; }
+    /* Wheel Canvas */
+    #wheelCanvas {
+      transition: transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99);
     }
 
-    .scanner-line {
-      animation: scan 2s infinite ease-in-out;
-    }
-
-    /* Floating animation */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(2deg); }
-    }
-
-    .animate-float {
-      animation: float 4s ease-in-out infinite;
+    /* Range slider custom */
+    input[type=range] {
+      accent-color: #ec4899;
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen items-center justify-center p-4 relative">
+<body class="min-h-screen flex flex-col justify-between items-center relative p-2 md:p-6">
 
-  <!-- BACKGROUND DECORATIONS -->
+  <!-- BACKGROUND DECORATIVE BLURS -->
   <div class="fixed top-10 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
   <div class="fixed bottom-10 right-10 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
-  <!-- STAGE 1: ENVELOPE SCREEN -->
-  <div id="envelope-screen" class="flex flex-col items-center justify-center z-50 text-center transition-all duration-700">
-    <div class="mb-8 animate-bounce">
-      <span class="bg-gradient-to-r from-amber-400 to-pink-500 text-slate-950 font-black px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-lg">
-        <i class="fa-solid fa-lock mr-1"></i> RAHASIA RETAIL DILARANG BUKA
-      </span>
-    </div>
-
-    <div class="envelope-wrapper my-4">
-      <div id="envelope" class="envelope" onclick="openEnvelope()">
-        <div class="front flap"></div>
-        <div class="front pocket"></div>
-        <div class="letter">
-          <p class="text-xs text-slate-500 font-semibold mb-1">DARI: REKAN SEPERJUANGAN</p>
-          <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">PANGGILAN DARURAT 🎂</p>
-          <div class="w-full bg-pink-100 rounded p-2 text-[10px] text-pink-700 font-mono border border-pink-200">
-            KLIK LALU TAHAN NAFAS... SULTAN MAU ULTAH!
-          </div>
-        </div>
-        <!-- Envelope Seal -->
-        <div id="seal" class="absolute z-10 top-[90px] left-[130px] w-15 h-15 bg-gradient-to-br from-amber-300 to-yellow-600 rounded-full flex items-center justify-center shadow-lg border-2 border-yellow-200 transition-transform duration-300">
-          <i class="fa-solid fa-crown text-amber-950 text-xl"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-12 max-w-sm">
-      <h2 class="text-xl font-bold text-white mb-1">Kepada Yth. Sdr:</h2>
-      <p class="text-amber-300 font-extrabold text-sm md:text-base leading-snug px-4 py-2 rounded-xl bg-white/5 backdrop-blur border border-white/10 shadow-inner">
-        MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN
-      </p>
-      <p class="text-slate-400 text-xs mt-3 flex items-center justify-center gap-2">
-        <i class="fa-solid fa-hand-pointer text-pink-400 animate-pulse"></i> Klik amplop di atas untuk klaim kejutan
-      </p>
-    </div>
+  <!-- AUDIO CONTROL BAR -->
+  <div id="audioControls" class="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <button id="bgmBtn" onclick="toggleBGM()" class="glass-card p-3 rounded-full shadow-lg hover:scale-110 active:scale-95 transition flex items-center justify-center text-pink-400 border border-pink-500/30">
+      <i id="bgmIcon" class="fas fa-music text-xl"></i>
+    </button>
   </div>
 
-  <!-- STAGE 2: MAIN DASHBOARD (Hidden Initially) -->
-  <main id="main-dashboard" class="hidden w-full max-w-4xl mx-auto py-8 px-2 md:px-6 transition-all duration-1000 opacity-0 transform scale-95">
-    
-    <!-- HEADER SECTION -->
-    <header class="text-center mb-8 relative">
-      <div class="inline-block mb-3">
-        <span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-          🎉 National Special Day 🎉
-        </span>
-      </div>
-      <h1 class="text-3xl md:text-6xl font-black font-fun tracking-wide bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400 bg-clip-text text-transparent mb-2">
-        HAPPY BIRTHDAY!
-      </h1>
-      <p class="text-lg md:text-xl font-bold text-slate-200 uppercase tracking-widest max-w-2xl mx-auto line-clamp-2">
-        MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN
-      </p>
-      <p class="text-xs text-pink-400 font-semibold mt-1">Manusia Ter-Jail, Ter-Kocak, &amp; Paling Banyak Marga Se-Kecamatan</p>
-    </header>
+  <!-- 1. STAGE LAYAR PEMBUKA: AMPLOP RAHASIA -->
+  <div id="envelopeStage" class="fixed inset-0 z-40 flex flex-col items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-700">
+    <div class="text-center mb-6">
+      <span class="inline-block bg-yellow-400 text-yellow-950 text-xs sm:text-sm font-extrabold px-4 py-1.5 rounded-full shadow-md uppercase tracking-wider mb-2 border-2 border-yellow-200">
+        <i class="fas fa-lock mr-1"></i> TOP SECRET & SANGAT RAHASIA
+      </span>
+      <h1 class="font-fun text-2xl sm:text-4xl text-white drop-shadow-md">Panggilan Darurat Spesial!</h1>
+      <p class="text-white/80 text-xs sm:text-sm mt-1">Klik amplop di bawah untuk membuka paket kejutan abad ini ✉️</p>
+    </div>
 
-    <!-- GRID CONTENT -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Envelope Container -->
+    <div class="envelope-wrapper my-4">
+      <div id="mainEnvelope" onclick="openEnvelope()" class="envelope">
+        <!-- Flap -->
+        <div class="envelope-flap"></div>
 
-      <!-- CARD 1: CERTIFICATE OF LENGTHY NAME -->
-      <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between border-t-4 border-amber-400">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-black select-none pointer-events-none">👑</div>
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-award mr-1"></i> Piagam Penghargaan</span>
-            <span class="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded font-mono">NO: HBD/007/2026</span>
+        <!-- Wax Seal Badge -->
+        <div class="wax-seal">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-500 rounded-full border-4 border-yellow-300 shadow-xl flex items-center justify-center text-red-700 font-extrabold text-2xl sm:text-3xl hover:rotate-12 transition">
+            <i class="fas fa-crown"></i>
           </div>
-          <h3 class="text-lg font-bold text-white mb-2">Gelar Resmiku Hari Ini:</h3>
-          <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700/50 mb-4">
-            <p class="text-xs text-slate-300 leading-relaxed font-mono">
-              <span class="text-pink-400 font-bold">Kanjeng Pangeran</span> Muhamad Stevanus Dharmaji Hutagalung Panggabean, <span class="text-amber-300">S.Jail</span> (Sarjana Jail), <span class="text-emerald-400">M.Kocak</span> (Master Humour), <span class="text-cyan-400">Sp.Traktiran</span> (Spesialis Traktir Kawan).
+        </div>
+
+        <!-- Surat di Dalam -->
+        <div class="letter flex flex-col justify-between items-center text-center">
+          <div class="w-full border-b-2 border-dashed border-rose-300 pb-2">
+            <span class="text-[10px] sm:text-xs font-bold text-rose-600 uppercase tracking-widest">Surat Izin Bertambah Umur</span>
+          </div>
+          <div class="my-auto">
+            <p class="font-fun text-base sm:text-xl text-gray-800 leading-snug">
+              HAPPY BIRTHDAY! 🎉
+            </p>
+            <p class="text-[11px] text-rose-600 font-bold mt-1">
+              "Siap-Siap Dikerjain Teman!"
             </p>
           </div>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Diberikan karena nama lengkapnya kalau ditulis di kuis Kahoot! butuh 3 slide sendiri dan dosanya kebanyakan ke-jailan ke temen kantor.
+          <div class="text-[10px] text-gray-400">
+            Membuka...
+          </div>
+        </div>
+
+        <!-- Front Pocket Envelope -->
+        <div class="envelope-pocket"></div>
+
+        <!-- Label Nama Lengkap Sangat Panjang di Depan Amplop -->
+        <div class="absolute bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-amber-100/95 border-2 border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-lg z-10 text-center pointer-events-none transform -rotate-1 text-slate-900">
+          <p class="text-[9px] sm:text-[10px] font-semibold text-amber-800 uppercase tracking-wider">Spesial Khusus Untuk:</p>
+          <p class="font-fun text-xs sm:text-sm text-rose-900 font-extrabold leading-tight mt-0.5 break-words">
+            MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN
           </p>
         </div>
-        <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center text-[10px] text-slate-400">
-          <span>Ditetapkan: Hari Ini</span>
-          <span class="text-pink-400 font-bold"><i class="fa-solid fa-circle-check"></i> Valid No Debat</span>
-        </div>
       </div>
+    </div>
 
-      <!-- CARD 2: FINGERPRINT SCANNER KW SUPER -->
-      <div class="glass-card rounded-2xl p-6 relative flex flex-col items-center justify-center text-center border-t-4 border-cyan-400">
-        <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-fingerprint mr-1"></i> Tes Ketampanan &amp; Ketuaan</span>
-        <p class="text-xs text-slate-300 mb-4">Tempelkan jempolmu di sini untuk memverifikasi umur asli:</p>
-        
-        <div id="scanner-box" onclick="startScan()" class="w-24 h-24 rounded-2xl bg-slate-900/80 border-2 border-cyan-500/40 relative overflow-hidden flex items-center justify-center cursor-pointer hover:border-cyan-400 transition-all group shadow-inner">
-          <i id="finger-icon" class="fa-solid fa-fingerprint text-4xl text-cyan-400/60 group-hover:scale-110 transition-transform"></i>
-          <div id="scanner-line" class="hidden absolute w-full h-1 bg-cyan-400 shadow-[0_0_15px_#22d3ee] scanner-line"></div>
-        </div>
+    <p class="text-white/80 text-xs sm:text-sm mt-6 animate-pulse">
+      <i class="fas fa-hand-pointer mr-1"></i> Sentuh / Klik Amplopnya, Mas Bro!
+    </p>
+  </div>
 
-        <p id="scan-status" class="text-xs font-mono text-cyan-300 mt-3 font-semibold">STATUS: SIAP SCAN</p>
-        <p id="scan-result" class="text-xs text-pink-400 mt-1 h-4 font-bold"></p>
+
+  <!-- 2. STAGE MAIN DASHBOARD KEJUTAN UTAMA -->
+  <main id="mainDashboard" class="w-full max-w-4xl mx-auto py-6 px-2 sm:px-4 flex flex-col gap-6 opacity-0 transition-opacity duration-1000 hidden">
+    
+    <!-- Header Banner -->
+    <header class="glass-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden shadow-2xl border border-white/10">
+      <span class="inline-block bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3">
+        🎂 Official Birthday Surprise
+      </span>
+      
+      <h1 class="font-fun text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-purple-300 to-amber-300 leading-tight">
+        Selamat Ulang Tahun!
+      </h1>
+      
+      <p class="font-fun text-base sm:text-2xl text-amber-300 font-bold mt-2 uppercase tracking-wide">
+        MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN
+      </p>
+
+      <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-xl mx-auto">
+        Penguasa 2 Marga, Pemilik Senyum Maut, & Manusia Paling Banyak Gelar Singkatan Se-Kecamatan!
+      </p>
+
+      <!-- Music & Celebration Banner Actions -->
+      <div class="mt-5 flex flex-wrap justify-center gap-3">
+        <button onclick="triggerConfettiBurst()" class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition flex items-center gap-2">
+          <i class="fas fa-gifts"></i> Tembak Hujan Confetti Lebih Banyak! 🎉
+        </button>
       </div>
+    </header>
 
-      <!-- CARD 3: IPHONE 18 PRO MAX 5TB RUNAWAY BUTTON -->
-      <div class="glass-card-glow rounded-2xl p-6 md:col-span-2 relative overflow-hidden text-center border-t-4 border-pink-500">
-        <div class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-3">
-          🎁 KADO SULTAN SPESIAL (100% REAL NO FEK)
+    <!-- GRID INTERAKTIF KOCAK & JAIL -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- FITUR 1: WHEEL OF FORTUNE (RODA HUKUMAN ULTAH JAIL) -->
+      <section class="glass-card md:col-span-2 rounded-3xl p-6 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden border-t-4 border-amber-400">
+        <div class="mb-4">
+          <span class="text-xs font-bold text-amber-400 bg-amber-400/20 border border-amber-400/30 px-3 py-1 rounded-full uppercase tracking-widest">
+            🎰 Game Hukuman Ultah
+          </span>
+          <h2 class="font-fun text-2xl text-white mt-2">Roda Keberuntungan & Hukuman</h2>
+          <p class="text-xs text-slate-300 mt-1">Putar rodanya untuk menentukan nasib traktiran Dharmaji hari ini!</p>
         </div>
-        <h3 class="text-xl md:text-2xl font-black text-white mb-1">
-          KLAIM IPHONE 18 PRO MAX 5TB!
-        </h3>
-        <p class="text-xs text-slate-300 mb-6 max-w-md mx-auto">
-          Warna Titanium Glow, 5 Terabyte, kamera tembus pandang. Klik tombol di bawah sebelum kehabisan kuota!
-        </p>
 
-        <!-- Area Tombol Kabur -->
-        <div id="runaway-container" class="relative w-full h-32 flex items-center justify-center">
-          <button id="runaway-btn" onmouseover="moveButton()" onclick="catchButton()" class="absolute px-6 py-3 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-pink-500/50 transition-all duration-150 transform active:scale-95">
-            <i class="fa-solid fa-gift mr-2"></i> KLAIM IPHONE 18 PRO MAX 5TB SEKARANG!
+        <div class="relative my-4 flex items-center justify-center">
+          <!-- Pointer Arrow -->
+          <div class="absolute -top-3 z-20 text-amber-400 text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            <i class="fas fa-caret-down"></i>
+          </div>
+
+          <!-- Wheel Canvas Container -->
+          <div class="w-64 h-64 sm:w-72 sm:h-72 relative rounded-full border-4 border-amber-400/80 shadow-[0_0_25px_rgba(251,191,36,0.3)] overflow-hidden">
+            <canvas id="wheelCanvas" width="300" height="300" class="w-full h-full"></canvas>
+          </div>
+        </div>
+
+        <button id="spinBtn" onclick="spinWheel()" class="mt-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-fun text-sm sm:text-base px-8 py-3 rounded-full shadow-xl hover:scale-105 active:scale-95 transition flex items-center gap-2">
+          <i class="fas fa-sync-alt"></i> PUTAR RODA HUKUMAN!
+        </button>
+      </section>
+
+      <!-- FITUR 2: KALKULATOR PENUAAN DINI & KERUTAN WAJAH -->
+      <section class="glass-card rounded-3xl p-6 shadow-xl flex flex-col justify-between relative border-t-4 border-purple-400">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-fun text-lg text-white flex items-center gap-2">
+              <i class="fas fa-calculator text-purple-400 text-xl"></i> Age & Wrinkle Calculator
+            </h2>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 font-bold px-2 py-0.5 rounded border border-purple-500/30">Deteksi Penuaan</span>
+          </div>
+          <p class="text-xs text-slate-300 mb-4">
+            Geser slider tingkat kejailan di bawah untuk menghitung uban dan kerutan wajah Dharmaji:
+          </p>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs text-slate-300 mb-1">
+                <span>Intensitas Ngejailin Temen/Hari:</span>
+                <span id="jailLevelText" class="font-bold text-pink-400">50 kali</span>
+              </div>
+              <input type="range" id="jailSlider" min="1" max="100" value="50" oninput="updateAgingCalc()" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+            </div>
+
+            <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700/60 grid grid-cols-2 gap-3 text-center">
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase font-semibold">Jumlah Uban Muncul</p>
+                <p id="ubanResult" class="font-fun text-xl text-amber-300 mt-1">150 Selembar</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase font-semibold">Garis Kerutan Dahi</p>
+                <p id="kerutanResult" class="font-fun text-xl text-rose-400 mt-1">12 Garis</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-[10px] text-slate-400 italic text-center mt-3">*Semakin sering nge-jailin kawan, uban makin cepat tumbuh!</p>
+      </section>
+
+      <!-- FITUR 3: SCAN FINGERPRINT / FACE ID KW -->
+      <section class="glass-card rounded-3xl p-6 shadow-xl flex flex-col justify-between relative border-t-4 border-cyan-400">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-fun text-lg text-white flex items-center gap-2">
+              <i class="fas fa-fingerprint text-cyan-400 text-xl"></i> Scan Fingerprint & Dosa
+            </h2>
+            <span class="text-[10px] bg-cyan-500/20 text-cyan-300 font-bold px-2 py-0.5 rounded border border-cyan-500/30">Keamanan Ketat</span>
+          </div>
+          <p class="text-xs text-slate-300 mb-4">
+            Verifikasi sidik jari untuk memastikan kamu adalah pemilik sah nama panjang ini!
+          </p>
+
+          <!-- Area Scan -->
+          <div id="scanBox" class="relative w-full h-32 bg-slate-900/90 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-cyan-500/40 cursor-pointer overflow-hidden group" onclick="startScanner()">
+            <div id="scanLine" class="hidden scan-line"></div>
+            <i id="scanIcon" class="fas fa-fingerprint text-4xl text-cyan-400 group-hover:scale-110 transition duration-300"></i>
+            <p id="scanStatus" class="text-xs text-cyan-200 mt-2 font-semibold">Tahan & Tekan Di Sini</p>
+          </div>
+        </div>
+
+        <div id="scanResult" class="mt-3 p-3 bg-rose-500/20 border border-rose-500/40 text-rose-300 rounded-xl text-xs hidden font-medium">
+          ⚠️ <strong>VERIFIKASI GAGAL!</strong> Wajah terlalu tampan & kadar kejailan melebihi batas wajar server.
+        </div>
+      </section>
+
+      <!-- FITUR 4: KLAIM IPHONE 18 PRO MAX 5TB (RUNAWAY BUTTON) -->
+      <section class="glass-card-glow md:col-span-2 rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden text-center border-t-4 border-pink-500">
+        <div>
+          <span class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-2">
+            🎁 Kado Sultan Spesial (100% Real No Fek)
+          </span>
+          <h2 class="font-fun text-2xl text-white mb-1">
+            KLAIM IPHONE 18 PRO MAX 5TB!
+          </h2>
+          <p class="text-xs text-slate-300 max-w-md mx-auto mb-4">
+            Edisi Khusus Titanium Glow 5TB! Klik tombol di bawah ini sebelum kuota habis diambil teman lain:
+          </p>
+        </div>
+
+        <!-- Playground Tombol Kabur -->
+        <div id="runawayArea" class="relative w-full h-36 bg-slate-900/60 rounded-2xl border border-pink-500/30 flex items-center justify-center overflow-hidden p-2">
+          <button id="runawayBtn" onmouseover="dodgeButton()" onclick="claimGiftTrap()" class="absolute bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full shadow-xl transition-all duration-150 ease-out flex items-center gap-2 whitespace-nowrap">
+            <i class="fas fa-gift"></i> KLAIM IPHONE 18 PRO MAX 5TB SEKARANG! 📱
           </button>
         </div>
-        <p id="runaway-hint" class="text-[11px] text-pink-300/70 italic mt-1">
+
+        <p id="runawayHint" class="text-[11px] text-pink-300/80 italic mt-2">
           *Tombolnya licin kayak belut, buruan kejar bro!
         </p>
-      </div>
+      </section>
 
-      <!-- CARD 4: INVOICE TRAKTIRAN MENGAMBANG -->
-      <div class="glass-card rounded-2xl p-6 border-t-4 border-emerald-400">
+      <!-- FITUR 5: INVOICE TRAKTIRAN ULTAH -->
+      <section class="glass-card md:col-span-2 rounded-3xl p-6 shadow-xl border-t-4 border-emerald-400">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Tagihan Ultah</span>
-          <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono">DUE: HARI INI</span>
+          <div>
+            <h2 class="font-fun text-xl text-white flex items-center gap-2">
+              <i class="fas fa-file-invoice-dollar text-emerald-400 text-2xl"></i> Tagihan Resmi Traktiran Ultah
+            </h2>
+            <p class="text-xs text-slate-400">Kewajiban pembayaran hari ini khusus untuk kawan-kawan tercinta.</p>
+          </div>
+          <button onclick="calculateDebt()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition">
+            Hitung Ulang 🔄
+          </button>
         </div>
-        <div class="space-y-2 text-xs font-mono border-b border-white/10 pb-3 mb-3">
-          <div class="flex justify-between text-slate-300">
-            <span>Ukur Usia + Umur Baru</span>
-            <span>Rp 0,-</span>
-          </div>
-          <div class="flex justify-between text-slate-300">
-            <span>Biaya Dikerjain Temen</span>
-            <span>GRATIS</span>
-          </div>
-          <div class="flex justify-between text-amber-300 font-bold">
-            <span>Wajib Traktir Kopi/Makan</span>
-            <span>Rp ∞ (Un-limited)</span>
-          </div>
-        </div>
-        <button onclick="payInvoice()" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-wallet"></i> Bayar Pakai Traktiran Nanti
-        </button>
-      </div>
 
-      <!-- CARD 5: WHISH & PRAYER BOX -->
-      <div class="glass-card rounded-2xl p-6 border-t-4 border-purple-400 flex flex-col justify-between">
-        <div>
-          <span class="text-xs font-bold text-purple-400 uppercase tracking-widest block mb-2"><i class="fa-solid fa-heart mr-1"></i> Doa &amp; Harapan Tulus</span>
-          <p class="text-xs text-slate-300 leading-relaxed italic mb-4">
-            "Semoga makin sukses karirnya, makin melimpah rezekinya, sehat terus, panjang umur, dan ke-jailannya dikurangin dikit biar kawan-kawan gak senam jantung terus!"
-          </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900/80 text-emerald-400 font-bold uppercase rounded-lg">
+              <tr>
+                <th class="p-3">Item Tagihan</th>
+                <th class="p-3">Kuantitas</th>
+                <th class="p-3">Total Biaya</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 font-medium">
+              <tr>
+                <td class="p-3">Kopi Susu Gula Aren Teman Se-Geng</td>
+                <td class="p-3">12 Cangkir</td>
+                <td class="p-3 text-emerald-400 font-bold">Rp 300.000</td>
+              </tr>
+              <tr>
+                <td class="p-3">Makan Malam Nasi Goreng / Bebek Bakar</td>
+                <td class="p-3">1 Porsi Rombongan</td>
+                <td class="p-3 text-emerald-400 font-bold">Rp 750.000</td>
+              </tr>
+              <tr>
+                <td class="p-3">Pajak Tambah Umur & Marga Panggabean</td>
+                <td class="p-3">1 Kali / Tahun</td>
+                <td class="p-3 text-emerald-400 font-bold">LUNAS PAKE SENYUM</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <button onclick="showWishModal()" class="w-full py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl text-xs font-bold transition shadow-lg flex items-center justify-center gap-2">
-          <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Balasan Kocak
-        </button>
-      </div>
+
+        <div class="mt-4 bg-emerald-950/40 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 border border-emerald-500/30">
+          <div>
+            <span class="text-[10px] text-emerald-400 uppercase font-bold">Total Yang Harus Dibayar:</span>
+            <p class="font-fun text-2xl text-emerald-300 font-extrabold">TRAKTIRAN SEJATI!</p>
+          </div>
+          <button onclick="payInvoiceModal()" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs px-6 py-3 rounded-xl shadow-lg hover:scale-105 active:scale-95 transition">
+            Bayar Traktiran Sekarang 💳
+          </button>
+        </div>
+      </section>
 
     </div>
 
-    <!-- FOOTER -->
-    <footer class="mt-12 text-center text-xs text-slate-500 border-t border-white/10 pt-6">
-      <p>Dibuat dengan rasa kawan sejati khusus buat **Muhamad Stevanus Dharmaji Hutagalung Panggabean**</p>
-      <p class="mt-1 text-[10px] text-slate-600">© 2026 Tim Sahabat Jail Indonesia. All rights reserved.</p>
+    <!-- TOMBOL MODAL DOA TULUS -->
+    <div class="text-center my-6">
+      <button onclick="openHeartfeltModal()" class="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white font-fun text-base sm:text-xl px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition flex items-center gap-3 mx-auto border border-white/20">
+        <i class="fas fa-heart text-yellow-300 text-2xl animate-pulse"></i> Klik Di Sini Untuk Pesan & Doa Tulus Dari Teman ❤️
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-slate-500 py-6">
+      Made with ❤️ & Kegokilan Maksimal untuk <strong>MUHAMAD STEVANUS DHARMAJI HUTAGALUNG PANGGABEAN</strong> | © 2026
     </footer>
+
   </main>
 
-  <!-- MODAL POPUP FOR MESSAGES -->
-  <div id="modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-white/20 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl relative animate-float">
-      <div id="modal-icon" class="text-5xl mb-3">🎉</div>
-      <h3 id="modal-title" class="text-lg font-bold text-white mb-2"></h3>
-      <p id="modal-body" class="text-xs text-slate-300 leading-relaxed mb-6"></p>
-      <button onclick="closeModal()" class="w-full py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl text-xs transition">
-        Siap Bro, Mantap! 👍
+  <!-- MODAL PESAN TULUS & DOA TERBAIK -->
+  <div id="heartfeltModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden transition-all duration-300">
+    <div class="glass-card bg-slate-900 border border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative transform scale-95 transition-all text-white" id="modalContent">
+      
+      <button onclick="closeHeartfeltModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 text-xl font-bold p-2">
+        <i class="fas fa-times"></i>
       </button>
+
+      <div class="text-center">
+        <div class="w-16 h-16 bg-rose-500/20 border border-rose-500/40 text-rose-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h3 class="font-fun text-2xl text-white">Untuk Dharmaji Tercinta</h3>
+        <p class="text-xs text-rose-400 font-semibold mb-4">Muhamad Stevanus Dharmaji Hutagalung Panggabean</p>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed text-justify max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+        <p>
+          Selamat ulang tahun ya, bro! Bercandaan dan kejailan di atas cuma pemanis biar hari bahagiamu makin berwarna dan berkesan.
+        </p>
+        <p>
+          Di umur yang baru ini, kami mendoakan semoga makin sehat, murah rezeki, panjang umur, dan semakin dekat dengan semua cita-cita besar yang kamu impikan. Semoga nama panjangmu yang megah ini selalu membawa keberkahan dan kebanggaan buat keluarga serta orang-orang di sekitarmu.
+        </p>
+        <p>
+          Tetap jadi pribadi yang ceria, makin sukses di karier/studi, dan jangan pernah bosan kumpul bareng kita-kita. Tetap rendah hati dan makin makin jaya!
+        </p>
+        <p class="font-bold text-center text-rose-400 pt-2">
+          "Happy Birthday, Brother! Wish you all the best!" 🎉🎂✨
+        </p>
+      </div>
+
+      <div class="mt-6 text-center">
+        <button onclick="closeHeartfeltModal()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs sm:text-sm px-8 py-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition">
+          Amiiin Ya Rabbal Alamin! 🙏
+        </button>
+      </div>
+
     </div>
   </div>
 
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // AUDIO SYNTHESIZER (No external files needed)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    /* ---------------------------------------------------
+       1. WEB AUDIO SYNTHESIZER (8-BIT BGM & SOUND EFFECTS)
+    --------------------------------------------------- */
+    let audioCtx = null;
+    let isMuted = false;
+    let bgmInterval = null;
+    let isBgmPlaying = false;
 
-    function playSound(type) {
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+    }
 
-      if (type === 'pop') {
-        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    function playTone(freq, type, duration) {
+      if (isMuted) return;
+      initAudio();
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
-      } else if (type === 'fail') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      } else if (type === 'fanfare') {
-        const notes = [261.63, 329.63, 392.00, 523.25];
-        notes.forEach((freq, idx) => {
-          const o = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          o.connect(g);
-          g.connect(audioCtx.destination);
-          o.frequency.value = freq;
-          g.gain.setValueAtTime(0.1, audioCtx.currentTime + idx * 0.1);
-          g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.1 + 0.3);
-          o.start(audioCtx.currentTime + idx * 0.1);
-          o.stop(audioCtx.currentTime + idx * 0.1 + 0.3);
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    function playFanfare() {
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+      notes.forEach((freq, i) => {
+        setTimeout(() => playTone(freq, 'triangle', 0.4), i * 120);
+      });
+    }
+
+    function playFailSound() {
+      playTone(150, 'sawtooth', 0.3);
+      setTimeout(() => playTone(120, 'sawtooth', 0.4), 200);
+    }
+
+    function toggleBGM() {
+      initAudio();
+      const icon = document.getElementById('bgmIcon');
+      if (isBgmPlaying) {
+        clearInterval(bgmInterval);
+        isBgmPlaying = false;
+        icon.className = "fas fa-music text-xl text-pink-400";
+      } else {
+        startBirthdayBGM();
+      }
+    }
+
+    function startBirthdayBGM() {
+      initAudio();
+      if (bgmInterval) clearInterval(bgmInterval);
+      isBgmPlaying = true;
+      document.getElementById('bgmIcon').className = "fas fa-volume-up text-xl text-emerald-400 animate-bounce";
+
+      // 8-bit Chiptune Happy Birthday Melody Frequencies
+      const melody = [
+        261, 261, 293, 261, 349, 329,
+        261, 261, 293, 261, 392, 349,
+        261, 261, 523, 440, 349, 329, 293,
+        466, 466, 440, 349, 392, 349
+      ];
+      let step = 0;
+
+      bgmInterval = setInterval(() => {
+        if (!isMuted && isBgmPlaying) {
+          playTone(melody[step], 'square', 0.22);
+          step = (step + 1) % melody.length;
+        }
+      }, 330);
+    }
+
+    /* ---------------------------------------------------
+       2. CONTINUOUS ENDLESS CONFETTI RAIN
+    --------------------------------------------------- */
+    let confettiRainInterval = null;
+
+    function startContinuousConfetti() {
+      if (confettiRainInterval) return;
+      confettiRainInterval = setInterval(() => {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 3,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#f43f5e', '#fbbf24', '#38bdf8', '#a855f7']
+          });
+          confetti({
+            particleCount: 3,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#f43f5e', '#fbbf24', '#38bdf8', '#a855f7']
+          });
+        }
+      }, 400);
+    }
+
+    function triggerConfettiBurst() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
         });
       }
     }
 
-    // OPEN ENVELOPE LOGIC
-    function openEnvelope() {
-      playSound('fanfare');
-      const env = document.getElementById('envelope');
-      const seal = document.getElementById('seal');
-      const envScreen = document.getElementById('envelope-screen');
-      const mainDashboard = document.getElementById('main-dashboard');
+    /* ---------------------------------------------------
+       3. ENVELOPE INTERACTION & AUTO-PLAY
+    --------------------------------------------------- */
+    let isEnvelopeOpened = false;
 
-      seal.style.transform = 'scale(0)';
+    function openEnvelope() {
+      if (isEnvelopeOpened) return;
+      isEnvelopeOpened = true;
+
+      const env = document.getElementById('mainEnvelope');
       env.classList.add('open');
 
-      // Trigger Confetti
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      // Auto Play Music & Fanfare
+      startBirthdayBGM();
+      playFanfare();
+      triggerConfettiBurst();
 
-      // Transition to Main Dashboard after envelope animation
+      // Fade out Stage Amplop & Tampilkan Main Dashboard
       setTimeout(() => {
-        envScreen.classList.add('opacity-0', 'scale-90');
+        const stage = document.getElementById('envelopeStage');
+        stage.classList.add('opacity-0', 'pointer-events-none');
+
         setTimeout(() => {
-          envScreen.classList.add('hidden');
-          mainDashboard.classList.remove('hidden');
+          stage.style.display = 'none';
+          const main = document.getElementById('mainDashboard');
+          main.classList.remove('hidden');
           setTimeout(() => {
-            mainDashboard.classList.remove('opacity-0', 'scale-95');
-            mainDashboard.classList.add('opacity-100', 'scale-100');
-            
-            // Big Confetti burst
-            confetti({
-              particleCount: 150,
-              spread: 100,
-              origin: { y: 0.4 }
-            });
+            main.classList.remove('opacity-0');
+            triggerConfettiBurst();
+            startContinuousConfetti(); // Endless Rain Start!
           }, 50);
-        }, 500);
-      }, 1200);
+        }, 700);
+
+      }, 1500);
     }
 
-    // FINGERPRINT SCANNER LOGIC
-    let isScanning = false;
-    function startScan() {
-      if (isScanning) return;
-      isScanning = true;
-      playSound('pop');
+    /* ---------------------------------------------------
+       4. WHEEL OF FORTUNE (RODA HUKUMAN)
+    --------------------------------------------------- */
+    const options = [
+      "Traktir Kopi Se-Geng",
+      "Salto 3 Kali",
+      "Beliin Boba 5 Liter",
+      "Traktir Makan Malam",
+      "Nyanyi Pakai Vokal O",
+      "Bebas Tugas 1 Hari"
+    ];
+    const colors = ["#f43f5e", "#8b5cf6", "#ec4899", "#10b981", "#f59e0b", "#3b82f6"];
+    let isSpinning = false;
 
-      const scannerLine = document.getElementById('scanner-line');
-      const status = document.getElementById('scan-status');
-      const result = document.getElementById('scan-result');
-      const icon = document.getElementById('finger-icon');
+    function drawWheel() {
+      const canvas = document.getElementById('wheelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const numOptions = options.length;
+      const arcSize = (2 * Math.PI) / numOptions;
 
-      scannerLine.classList.remove('hidden');
-      icon.classList.add('text-cyan-400');
-      status.innerText = "MENSCAN DOSA-DOSA...";
-      result.innerText = "";
+      ctx.clearRect(0, 0, 300, 300);
 
-      setTimeout(() => {
-        scannerLine.classList.add('hidden');
-        playSound('fail');
-        status.innerText = "VERIFIKASI GAGAL!";
-        status.className = "text-xs font-mono text-pink-500 mt-3 font-bold";
-        result.innerText = "❌ Terlalu tampan & terlalu banyak jail!";
-        isScanning = false;
-      }, 2000);
-    }
+      for (let i = 0; i < numOptions; i++) {
+        const angle = i * arcSize;
+        ctx.beginPath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.moveTo(150, 150);
+        ctx.arc(150, 150, 145, angle, angle + arcSize);
+        ctx.lineTo(150, 150);
+        ctx.fill();
+        ctx.stroke();
 
-    // RUNAWAY IPHONE 18 PRO MAX BUTTON LOGIC
-    let moveCount = 0;
-    function moveButton() {
-      const btn = document.getElementById('runaway-btn');
-      const container = document.getElementById('runaway-container');
-      const hint = document.getElementById('runaway-hint');
-
-      const containerRect = container.getBoundingClientRect();
-      const btnRect = btn.getBoundingClientRect();
-
-      const maxX = containerRect.width - btnRect.width;
-      const maxY = containerRect.height - btnRect.height;
-
-      const newX = (Math.random() - 0.5) * maxX;
-      const newY = (Math.random() - 0.5) * maxY;
-
-      btn.style.transform = `translate(${newX}px, ${newY}px)`;
-      playSound('pop');
-      moveCount++;
-
-      if (moveCount > 3) {
-        hint.innerText = "👀 Waduh, ngebut banget tombol iPhone 18 Pro Max 5TB nya!";
-        hint.className = "text-[11px] text-amber-300 font-bold italic mt-1 animate-pulse";
+        // Draw Text
+        ctx.save();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 11px 'Plus Jakarta Sans'";
+        ctx.translate(150, 150);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillText(options[i], 135, 4);
+        ctx.restore();
       }
     }
 
-    function catchButton() {
-      playSound('fanfare');
-      confetti({ particleCount: 80, spread: 60 });
-      showModalCustom(
-        "📱 SELAMAT! KAMU BERHASIL KLAIM!",
-        "Kamu mendapatkan 1 unit Dus iPhone 18 Pro Max 5TB Titanium Glow! Isinya cuman doa dan harapan baik dari kawan-kawan. HP aslinya beli sendiri ya Bos Dharmaji! 😂"
-      );
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const canvas = document.getElementById('wheelCanvas');
+      
+      // Rigging agar selalu berhenti di opsi index 0 atau 3 (Traktir Kopi / Makan)
+      const targetIndex = 0; // "Traktir Kopi Se-Geng"
+      const numOptions = options.length;
+      const degreesPerSlice = 360 / numOptions;
+      
+      // Hitung rotasi agar panah atas menunjuk ke opsi target
+      const stopDegree = 360 - (targetIndex * degreesPerSlice) - (degreesPerSlice / 2) - 90;
+      const totalRotation = 360 * 5 + stopDegree; // 5 putaran penuh + target
+
+      canvas.style.transform = `rotate(${totalRotation}deg)`;
+
+      // Play tick sounds during spin
+      let ticks = 0;
+      const tickInterval = setInterval(() => {
+        playTone(700, 'sine', 0.05);
+        ticks++;
+        if (ticks > 25) clearInterval(tickInterval);
+      }, 150);
+
+      setTimeout(() => {
+        isSpinning = false;
+        playFanfare();
+        triggerConfettiBurst();
+        alert(`🎉 HASIL RODA HUKUMAN:\n\nSelamat! Dharmaji dapat hukuman: "${options[targetIndex]}"! Ditunggu tanggal mainnya!`);
+      }, 4100);
     }
 
-    // INVOICE PAYMENT
-    function payInvoice() {
-      playSound('fanfare');
-      confetti({ particleCount: 100, spread: 80 });
-      showModalCustom(
-        "☕ METODE PEMBAYARAN DISETUJUI!",
-        "Tagihan traktiran kopi & makan malam otomatis terkirim ke WhatsApp kawan-kawan. Ditunggu tanggal mainnya!"
-      );
+    /* ---------------------------------------------------
+       5. AGE & WRINKLE CALCULATOR
+    --------------------------------------------------- */
+    function updateAgingCalc() {
+      const val = document.getElementById('jailSlider').value;
+      document.getElementById('jailLevelText').textContent = `${val} kali`;
+      
+      const uban = Math.floor(val * 3.5);
+      const kerutan = Math.floor(val * 0.3);
+
+      document.getElementById('ubanResult').textContent = `${uban} Selembar`;
+      document.getElementById('kerutanResult').textContent = `${kerutan} Garis`;
     }
 
-    // WISH MODAL
-    function showWishModal() {
-      playSound('pop');
-      showModalCustom(
-        "💌 PESAN KHUSUS UNTUK DHARMAJI",
-        "Tetap jadi temen yang asik, konyol, dan selalu bikin suasana rame. Panjang umur, sehat selalu, dan dikabulkan semua cita-citanya tahun ini! 🔥"
-      );
+    /* ---------------------------------------------------
+       6. FINGERPRINT SCANNER
+    --------------------------------------------------- */
+    let isScanning = false;
+    function startScanner() {
+      if (isScanning) return;
+      isScanning = true;
+
+      const line = document.getElementById('scanLine');
+      const icon = document.getElementById('scanIcon');
+      const status = document.getElementById('scanStatus');
+      const result = document.getElementById('scanResult');
+
+      line.classList.remove('hidden');
+      icon.className = "fas fa-spinner fa-spin text-4xl text-cyan-400";
+      status.textContent = "Menganalisis Ketampanan & Dosa...";
+      result.classList.add('hidden');
+
+      playTone(440, 'sine', 0.1);
+
+      setTimeout(() => {
+        line.classList.add('hidden');
+        icon.className = "fas fa-times-circle text-4xl text-rose-500";
+        status.textContent = "GAGAL VERIFIKASI!";
+        result.classList.remove('hidden');
+        playFailSound();
+        isScanning = false;
+      }, 2200);
     }
 
-    // GENERIC MODAL UTILITY
-    function showModalCustom(title, body) {
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-body').innerText = body;
-      document.getElementById('modal').classList.remove('hidden');
+    /* ---------------------------------------------------
+       7. RUNAWAY IPHONE 18 PRO MAX BUTTON
+    --------------------------------------------------- */
+    let dodgeCount = 0;
+    function dodgeButton() {
+      const btn = document.getElementById('runawayBtn');
+      const area = document.getElementById('runawayArea');
+      const hint = document.getElementById('runawayHint');
+
+      const areaRect = area.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width - 20;
+      const maxY = areaRect.height - btnRect.height - 20;
+
+      const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+      btn.style.left = `${randomX}px`;
+      btn.style.top = `${randomY}px`;
+
+      playTone(600, 'sine', 0.08);
+      dodgeCount++;
+
+      if (dodgeCount > 3) {
+        hint.textContent = "👀 Tombol iPhone 18 Pro Max 5TB nya makin lincah bro! Kejar terus!";
+        hint.className = "text-[11px] text-amber-300 font-bold italic mt-2 animate-pulse";
+      }
     }
 
-    function closeModal() {
-      playSound('pop');
-      document.getElementById('modal').classList.add('hidden');
+    function claimGiftTrap() {
+      playFanfare();
+      triggerConfettiBurst();
+      alert("📱 SELAMAT! Kamu berhasil klaim DUS iPhone 18 Pro Max 5TB Titanium Glow! Isinya cuma doa dari kawan-kawan. HP aslinya beli sendiri ya Bos Dharmaji! 😂");
     }
+
+    /* ---------------------------------------------------
+       8. INVOICE CALCULATOR & PAY
+    --------------------------------------------------- */
+    function calculateDebt() {
+      playTone(520, 'sine', 0.1);
+      alert("Hitung ulang selesai! Total Tetap: TRAKTIRAN SEJATI TANPA TAPI!");
+    }
+
+    function payInvoiceModal() {
+      playTone(800, 'triangle', 0.2);
+      alert("💳 Metode Pembayaran Diterima:\n\nSilakan siapkan jadwal ngopi & makan bareng teman-teman minggu ini!");
+    }
+
+    /* ---------------------------------------------------
+       9. HEARTFELT MODAL
+    --------------------------------------------------- */
+    function openHeartfeltModal() {
+      playTone(523, 'sine', 0.2);
+      const modal = document.getElementById('heartfeltModal');
+      const content = document.getElementById('modalContent');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+      }, 10);
+      triggerConfettiBurst();
+    }
+
+    function closeHeartfeltModal() {
+      const modal = document.getElementById('heartfeltModal');
+      const content = document.getElementById('modalContent');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    // Initialize Canvas Wheel on Load
+    window.onload = function() {
+      drawWheel();
+    };
   </script>
 </body>
 </html>
